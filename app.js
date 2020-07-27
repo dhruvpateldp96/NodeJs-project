@@ -1,24 +1,28 @@
-var events = require('events')
-var util = require('util')
+const express = require('express')
+const app = express()
+const PORT = 5000
+const mongoose = require('mongoose')
+const {MONGOURI} = require('./keys')
 
-var Person = function(name){
-    this.name= name
-}
+require('./models/user')
+app.use(express.json())
 
-util.inherits(Person, events.EventEmitter)
+app.use(require('./routes/auth'))
 
-var james = new Person('james')
-var mary = new Person('mary')
-// var stuff = require("./stuff")
-
-var people = [james,mary]
-
-people.forEach(function(person){
-    person.on('speak',function(mssg){
-        console.log(person.name + " said:" + mssg)
-    })
+// mongoose.model("User")
+mongoose.connect(MONGOURI,{
+    useUnifiedTopology: true,
+    useNewUrlParser: true
+})
+mongoose.connection.on('connected', () =>{
+    console.log("connected to mngo")
 })
 
-james.emit('speak', 'hey dudes')
-mary.emit('speak', 'curry chahiye')
-// console.log(stuff.counter([1,23,4]))
+mongoose.connection.on('error', (err) =>{
+    console.log("err", err)
+})
+
+app.listen(PORT,()=>{
+    console.log("server is running", PORT)
+})
+
