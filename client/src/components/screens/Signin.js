@@ -16,7 +16,7 @@ export const Signin = () => {
                     placeholder = 'password'
                 />
                 
-                <button className="btn waves-effect waves-light #64b5f6 blue lighten-2">Login</button>
+                <button className="btn waves-effect waves-light #64b5f6 blue darken-1">Login</button>
 
                 <h6>
                     <Link to="/signup">Don't have an account?</Link>

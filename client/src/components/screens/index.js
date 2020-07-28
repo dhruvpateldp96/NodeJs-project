@@ -16,10 +16,12 @@ import {Home} from './Home'
 import {Signin} from './Signin'
 import {Profile} from './Profile'
 import {Signup} from './Signup'
+import {CreatePost} from './CreatePost'
 
 export{
     Home,
     Signin,
     Profile,
-    Signup
+    Signup,
+    CreatePost
 }

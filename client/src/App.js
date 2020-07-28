@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import NavBar from './components/Navbar'
 import {BrowserRouter, Route} from 'react-router-dom'
-import {Home,Signin,Profile,Signup} from './components/screens'
+import {Home,Signin,Profile,Signup,CreatePost} from './components/screens'
 
 function App() {
   return (
@@ -24,6 +24,9 @@ function App() {
           <Profile/>
         </Route>
 
+        <Route path='/create'>
+          <CreatePost/>
+        </Route>
     </BrowserRouter>
   );
 }

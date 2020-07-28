@@ -26,11 +26,19 @@ a{
 
 .gallery{
   display:flex;
-  flex-wrap:wrap;
+  flex-wrap: wrap;
   justify-content: space-around;
 }
 
 .item{
   width: 30%;
   height: 30%;
+  padding-bottom: 15px
+}
+
+.home-card{
+  max-width: 500px;
+  height: max-content;
+  margin: 26px auto;
+
 }
