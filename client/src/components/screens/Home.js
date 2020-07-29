@@ -1,19 +1,105 @@
-import React from 'react'
+import React, {useState, useEffect, useContext} from 'react'
+import  {UserContext} from '../../App'
 
 export const Home = () => {
+    const [data, setData] = useState([])
+    // const {state,dispatch} = 
+    useEffect(() => {
+        fetch('/allpost', {
+            headers:{
+                "Authorization":"Bearer "+localStorage.getItem('jwt')
+
+            }
+        }).then(res => res.json())
+        .then(result => {
+            console.log(result)
+            setData(result.posts)
+        })
+    }, [])
+
+    const likePost = (id) => {
+        fetch('/like', {
+            method:'put',
+            headers:{
+                "Content-Type":"application/json",
+                "Authorization":'Bearer '+localStorage.getItem('jwt')
+            },
+            body:JSON.stringify({
+                postId:id
+            })
+        }).then(res => res.json())
+        .then(result =>{
+            console.log(result)
+            const newData = data.map(item => {
+                if(item._id == result._id){
+                    return result
+                }else{
+                    return item
+                }
+            })
+            setData(newData)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+    const unLikePost = (id) => {
+        fetch('/unlike', {
+            method:'put',
+            headers:{
+                "Content-Type":"application/json",
+                "Authorization":'Bearer '+localStorage.getItem('jwt')
+            },
+            body:JSON.stringify({
+                postId:id
+            })
+        }).then(res => res.json())
+        .then(result =>{
+            // console.log(result)
+            const newData = data.map(item => {
+                if(item._id == result._id){
+                    return result
+                }else{
+                    return item
+                }
+            })
+            setData(newData)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
     return (
         <div className="home">
-            <div className="card home-card">
-                <div className="card-image">
-                    <img src="https://images.unsplash.com/photo-1557933245-965fc049a804?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"/>
-                </div>
-                <div className="card-content">
-                    <i className ="material-icons" style={{color:"red"}}>favorite</i>
-                    <h6>title</h6>
-                    <h6>Nice post</h6>
-                    <input type="text" placeholder='add a comment'/>
-                </div>
-            </div>
+            {
+                data.map(item => {
+                    return(
+                        <div className="card home-card" key={item._id}>
+                            <h5>{item.postedBy.name}</h5>
+                            <div className="card-image">
+                                <img src={item.photo}/>
+                            </div>
+                            <div className="card-content">
+                                <i className ="material-icons" style={{color:"red"}}>favorite</i>
+                                <i 
+                                    className = 'material-icons'
+                                    onClick={() => {
+                                        likePost(item._id)
+                                    }}>thumb_up</i>
+                                <i 
+                                    className = 'material-icons'
+                                    onClick={() => {
+                                        unLikePost(item._id)
+                                    }}>thumb_down</i>
+                                <h6>{item.likes.length} Likes</h6>
+                                <h6>{item.body}</h6>
+                                <input type="text" placeholder='add a comment'/>
+                            </div>
+                        </div>
+                    )
+                })
+            }
+            
         </div>
     )
 }

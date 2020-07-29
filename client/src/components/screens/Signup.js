@@ -1,8 +1,9 @@
 import React, {useState} from 'react'
-import {Link} from 'react-router-dom'
-// import {Signin} from './Signin'
+import {Link, useHistory} from 'react-router-dom'
+import M from 'materialize-css'
 
 export const Signup = () => {
+    const history = useHistory()
     const [name, setName] = useState("")
     const [password, setPassword] = useState("")
     const [email, setEmail] = useState("")
@@ -20,7 +21,15 @@ export const Signup = () => {
             })
         }).then(res => res.json())
         .then(data => {
-            console.log(data)
+            if (data.error){
+                M.toast({html:data.error, classes:"#c62828 red darken-3 "})
+            }
+            else{
+                M.toast({html:data.message, classes:'#43a047 green darken-1'})
+                history.push('/signin')
+            }
+        }).catch(err =>{
+            console.log(err)
         })
     }
  
@@ -41,7 +50,7 @@ export const Signup = () => {
                     onChange = {(event) => {setName(event.target.value)}}
                 />
                 <input 
-                    type = 'text'
+                    type = 'password'
                     placeholder = 'password'
                     value={password}
                     onChange = {(event) => {setPassword(event.target.value)}}
