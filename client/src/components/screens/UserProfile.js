@@ -3,23 +3,23 @@ import {UserContext} from '../../App'
 import {useParams} from 'react-router-dom'
 
 export const UserProfile = () => {
-    const [myPics, setmyPics] = useState([])
+    const [userProfile, setUserProfile] = useState([])
     const {state,dispatch} = useContext(UserContext)
     const {userid} = useParams()
-    console.log(userid)
-    // useEffect(() => {
-    //     fetch('/myposts', {
-    //         headers:{
-    //             "Authorization":"Bearer "+localStorage.getItem('jwt')
-
-    //         }
-    //     }).then(res => res.json())
-    //     .then(result => {
-    //         console.log(result)
-    //         setmyPics(result.mypost)
-    //     })
-    // }, [])
-
+    // console.log(userid)
+    useEffect(() => {
+        fetch(`/user/${userid}`, {
+            headers:{
+                "Authorization":"Bearer "+localStorage.getItem('jwt')
+            }
+        }).then(res => res.json())
+        .then(result => {
+            // console.log(result)
+            setUserProfile(result)
+            
+        })
+    }, [])
+    console.log(userProfile.user)
     return (
         <div style={{maxWidth:"550px", margin:"0px auto"}}>
             <div style={{
@@ -34,7 +34,7 @@ export const UserProfile = () => {
                     />
                 </div>
                 <div>
-                    <h4>{state?state.name:'loading'}</h4>
+                    <h4>{userProfile.user?userProfile.user.name:'..loading'}</h4>
                     <div style={{display:"flex", justifyContent:"space-between", width:"108%"}}>
                         <h6>40 posts</h6>
                         <h6>40 followers</h6>
@@ -46,14 +46,14 @@ export const UserProfile = () => {
             
 
             <div className="gallery">
-                {
+                {/* {
                     myPics.map(item => {
                         return(
                             <img key={item._id} className="item" src={item.photo} alt={item.title}/>
                         )
                         
                     })
-                }
+                } */}
                 
       
             </div>
