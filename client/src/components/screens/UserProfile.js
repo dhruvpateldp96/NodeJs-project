@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useContext} from 'react'
 import {UserContext} from '../../App'
 import {useParams} from 'react-router-dom'
+import Ellipsis from '@bit/joshk.react-spinners-css.ellipsis';
 
 export const UserProfile = () => {
     const [userProfile, setUserProfile] = useState([])
@@ -21,6 +22,9 @@ export const UserProfile = () => {
     }, [])
     console.log(userProfile.user)
     return (
+        <>
+        {userProfile.user ? 
+        
         <div style={{maxWidth:"550px", margin:"0px auto"}}>
             <div style={{
                         display:"flex",
@@ -34,9 +38,13 @@ export const UserProfile = () => {
                     />
                 </div>
                 <div>
-                    <h4>{userProfile.user?userProfile.user.name:'..loading'}</h4>
+                   
+                    <h4>{userProfile.user.name} </h4>
+                    <h5>{userProfile.user.email} </h5>
+              
+
                     <div style={{display:"flex", justifyContent:"space-between", width:"108%"}}>
-                        <h6>40 posts</h6>
+                        <h6>{userProfile.posts.length}</h6>
                         <h6>40 followers</h6>
                         <h6>40 following</h6>
 
@@ -46,17 +54,22 @@ export const UserProfile = () => {
             
 
             <div className="gallery">
-                {/* {
-                    myPics.map(item => {
+                {
+                    userProfile.posts.map(item => {
                         return(
                             <img key={item._id} className="item" src={item.photo} alt={item.title}/>
                         )
                         
                     })
-                } */}
+                }
                 
       
             </div>
         </div>
+        
+        
+        : <div className='gallery'><Ellipsis color="black" size='100px'/></div>}
+        
+        </>
     )
 }
